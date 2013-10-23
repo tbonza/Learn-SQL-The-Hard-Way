@@ -56,11 +56,11 @@ INSERT INTO person SET
     
 -- Update the new columns for "pet"
 UPDATE pet
-    INNER JOIN
-    pet.id = person_pet.pet_id
-    AND person.id = person_pet.person_id
-SET
-    pet.dob = person.dob;
+SET pet.dob = person.dob
+FROM person_pet
+INNER JOIN person ON
+pet.id = person_pet.pet_id
+AND person.id = person_pet.person_id;
     
 -- Update the new columns for "person_pet"
 UPDATE person_pet
