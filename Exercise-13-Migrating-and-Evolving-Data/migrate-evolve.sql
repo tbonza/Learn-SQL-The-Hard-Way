@@ -33,9 +33,8 @@ ALTER TABLE pet ADD COLUMN parent INT;
 -- Update the parent column in "pet" with each owners id from "person"
 UPDATE pet
 SET parent = person.id
-WHERE 
-FROM person_pet, person
-WHERE
+FROM person_pet
+INNER JOIN person ON
 person.id = person_pet.id;
 
 -- Update the new columns for "person"
