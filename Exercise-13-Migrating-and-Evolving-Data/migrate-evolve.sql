@@ -31,11 +31,23 @@ ALTER TABLE pet ADD COLUMN parent INT;
  * person_pet relation table to indicate when that person bought the pet. */
 
 -- Update the parent column in "pet" with each owners id from "person"
+
 UPDATE pet
-SET parent = person.id
-FROM person_pet
-INNER JOIN person ON
-person.id = person_pet.id;
+SET parent = 
+(SELECT person.id
+FROM person, person_pet, pet
+WHERE
+person_pet.pet_id = pet.id);
+
+
+UPDATE t1.Approved
+SET t1.Groupid = t2.ID
+FROM dbo.Approved t1
+INNER JOIN dbo.Locations t2 ON t1.Location = t2.Location_Name
+
+-- stuck!
+-- posted question http://stackoverflow.com/questions/19555596/updating-a-value-with-3-tables
+
 
 -- Update the new columns for "person"
 INSERT INTO person SET
