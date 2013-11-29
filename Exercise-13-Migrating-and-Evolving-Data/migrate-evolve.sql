@@ -21,7 +21,7 @@ ALTER TABLE person ADD COLUMN dob DATETIME;
 /* Add a purchased_on column to person_pet of type DATETIME. */
 ALTER TABLE person_pet ADD COLUMN purchased_on DATETIME;
 
-/* Add a parent to pet column that's an INTEGER and holds the id for
+/* Add a parent to pet co lumn that's an INTEGER and holds the id for
  * this pet's parent. */
 ALTER TABLE pet ADD COLUMN parent INT;
 
@@ -117,18 +117,14 @@ AND
 -- Ended up setting pet.parent to the Owner's name so let's find all owners
 -- with multiple pets...seems close enough
 
-SELECT pet.name AS "The Pet", person.first_name AS "The Owner"
+SELECT person.first_name AS "The Owner",
+       pet.name AS "The Pet",
+       pet.breed AS "Pet Breed"
 FROM pet, person
-WHERE
-    pet.parent = person.id;
-GROUP BY
-    person.first_name AND  pet.name
-HAVING
-    COUNT(person.first_name) > 1;
-    
-    
-
-
-  
- 
- 
+WHERE pet.parent = person.id
+AND pet.parent IN
+  (SELECT pet.parent
+   FROM pet
+   GROUP BY pet.parent
+   HAVING COUNT(pet.parent) > 1)
+ORDER BY pet.name ASC;
