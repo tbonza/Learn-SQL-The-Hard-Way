@@ -26,8 +26,28 @@
  -- I haven't been exactly playing by the same rules as Learn SQL the Hard
  -- Way so let's just roll through this thing with some SELECT statements
 
+-- Doing it for a unicorn
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS find_unicorn $$
+
+-- Create a stored procedure to alert us if a unicorn sneaks into the db
+CREATE PROCEDURE find_unicorn()
+
+BEGIN
+
+ -- If someone has a pet unicorn, sound the alarm!
+ IF EXISTS((SELECT breed FROM pet WHERE breed="Unicorn")) THEN
+     ROLLBACK;
+ ELSE
+     COMMIT;
+ END IF;
+
+END $$
+
+
 /* Let's COMMIT this one */
-START TRANSACTION;
+BEGIN;
 
 -- Find anyone who owns more than one pet
 SELECT person.first_name AS "The Owner",
@@ -51,9 +71,13 @@ SELECT first_name
 FROM person
 WHERE first_name = "Jolene";
 
-COMMIT;
+DELIMITER $$
+CALL find_unicorn() $$
+DELIMITER ;
 
-/* Let's ROLLBACK this one if we find a Unicorn */
+END;
+
+    
 
 
 
