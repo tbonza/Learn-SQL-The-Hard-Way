@@ -1,5 +1,0 @@
-# Using Ubuntu 13.04, get MySql 5.5
-https://help.ubuntu.com/13.04/serverguide/mysql.html
-
-# Start MySQL in the terminal
-$ mysql -u root -p
